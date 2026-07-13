@@ -1,4 +1,15 @@
+// Program: The Employee Management System
+// Assignment: Assignment 01
+// JavaScript 2 - Comp 649
+// Author: Brian Dinh
+
+
+
+
 // GET ADD EMPLOYEE FORM AND EMPLOYEE TABLE FROM THE DOM
+
+
+
 
 // SET A COUNT VARIABLE TO DISPLAY NEXT TO EMPLOYEES HEADER
 
@@ -30,60 +41,58 @@
 
 
 "use strict";
+//form.addEventListener('submit', (e) => {
+ window.addEventListener("load", init);
 
-window.addEventListener("load", () => {
+function init() {
 
-    // Form controls
-    const empId = document.getElementById("id");
+    // Employee Count Variable
+    let employeeCount = 0;
+
+    // Form Controls
+    const empID = document.getElementById("id");
     const empName = document.getElementById("name");
     const empExt = document.getElementById("extension");
     const empEmail = document.getElementById("email");
     const empDept = document.getElementById("department");
     const btnAdd = document.getElementById("submit");
 
-    // Table and output
+    // Table and Output
     const employeeTable = document.getElementById("employees");
-    const employeeCount = document.getElementById("empCount");
+    const countOutput = document.getElementById("empCount");
 
-    // Running count
-    let count = 0;
+    // Set Initial Focus
+    empID.focus();
 
-    // Update employee count display
-    function updateCount() {
-        employeeCount.value = count;
-    }
+    // Add Employee Event
+    btnAdd.addEventListener("click", function (e) {
 
-    // Set initial focus
-    empId.focus();
-
-    // Add Employee
-    btnAdd.addEventListener("click", (e) => {
-
+       // PREVENT FORM SUBMISSION 
         e.preventDefault();
 
-        // Capture form values
-        const id = empId.value.trim();
-        const name = empName.value.trim();
-        const extension = empExt.value.trim();
-        const email = empEmail.value.trim();
-        const department = empDept.value;
+        // Get Values From Form / text boxes
+        let id = empID.value.trim();
+        let name = empName.value.trim();
+        let ext = empExt.value.trim();
+        let email = empEmail.value.trim();
+        let dept = empDept.value;
 
-        // Optional validation
+        // Basic Validation
         if (
             id === "" ||
             name === "" ||
-            extension === "" ||
+            ext === "" ||
             email === "" ||
-            department === ""
+            dept === ""
         ) {
             alert("Please complete all fields.");
             return;
         }
 
-        // Create new row
+        // INSERT A NEW ROW AT THE END OF THE EMPLOYEES TABLE
         let row = employeeTable.insertRow();
 
-        // Create cells
+        // INSERT A CELL FOR EACH ITEM WITHIN THE NEW ROW
         let cellID = row.insertCell();
         let cellName = row.insertCell();
         let cellExt = row.insertCell();
@@ -91,48 +100,53 @@ window.addEventListener("load", () => {
         let cellDept = row.insertCell();
         let cellDelete = row.insertCell();
 
-        // Add text nodes
+        // APPEND THE TEXT VALUES AS TEXT NODES WITHIN THE CELLS
         cellID.appendChild(document.createTextNode(id));
         cellName.appendChild(document.createTextNode(name));
-        cellExt.appendChild(document.createTextNode(extension));
+        cellExt.appendChild(document.createTextNode(ext));
         cellEmail.appendChild(document.createTextNode(email));
-        cellDept.appendChild(document.createTextNode(department));
+        cellDept.appendChild(document.createTextNode(dept));
 
-        // Create delete button
-        let deleteBtn = document.createElement("button");
-        deleteBtn.textContent = "X";
-        deleteBtn.className = "btn btn-danger btn-sm";
+        // CREATE THE DELETE BUTTON
+        let btnDelete = document.createElement("button");
+        btnDelete.textContent = "X";
+        btnDelete.className = "btn btn-danger btn-sm";
 
-        cellDelete.appendChild(deleteBtn);
+        cellDelete.appendChild(btnDelete);
 
-        // Increment employee count
-        count++;
-        updateCount();
+        // INCREMENENT THE NUMBER OF EMPLOYEES IN THE TABLE / Update Employee Count
+        employeeCount++;
+        countOutput.value = employeeCount;
 
-        // Delete employee
-        deleteBtn.addEventListener("click", (e) => {
+        // Delete Employee Event
+        btnDelete.addEventListener("click", function (e) {
 
-            if (confirm("Are you sure you want to delete this employee?")) {
+            let selectedRow =
+                e.target.parentNode.parentNode;
+
+            let confirmDelete = confirm(
+                "Are you sure you want to delete this employee?"
+            );
+
+            if (confirmDelete) {
 
                 employeeTable.deleteRow(
-                    e.target.parentNode.parentNode.rowIndex
+                    selectedRow.rowIndex
                 );
 
-                count--;
-                updateCount();
+                employeeCount--;
+                countOutput.value = employeeCount;
             }
-
         });
 
-        // Clear form
-        empId.value = "";
+        // RESET THE FORM / Clear Form
+        empID.value = "";
         empName.value = "";
         empExt.value = "";
         empEmail.value = "";
         empDept.selectedIndex = 0;
 
-        // Return focus to Employee ID field
-        empId.focus();
-    });
+        // SET FOCUS BACK TO THE ID TEXT BOX / Return Cursor to Employee ID
+        empID.focus();
 
-});
+    })};
