@@ -40,7 +40,7 @@
 
 
 
-"use strict";
+/*"use strict";
 const form = document.getElementById("addForm");
 form.addEventListener('submit', (e) => {
  //window.addEventListener("load", init);
@@ -150,4 +150,52 @@ function init() {
         // SET FOCUS BACK TO THE ID TEXT BOX / Return Cursor to Employee ID
         empID.focus();
 
-    })}});
+    })}}); */
+
+
+"use strict";
+
+let employeeCount = 0;
+
+const form = document.getElementById("addForm");
+const employeeTable = document.getElementById("employees");
+const countOutput = document.getElementById("empCount");
+
+form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const id = document.getElementById("id").value.trim();
+    const name = document.getElementById("name").value.trim();
+    const ext = document.getElementById("extension").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const dept = document.getElementById("department").value;
+
+    let row = employeeTable.insertRow();
+
+    row.insertCell().textContent = id;
+    row.insertCell().textContent = name;
+    row.insertCell().textContent = ext;
+    row.insertCell().textContent = email;
+    row.insertCell().textContent = dept;
+
+    let deleteCell = row.insertCell();
+    let btnDelete = document.createElement("button");
+
+    btnDelete.textContent = "X";
+    btnDelete.className = "btn btn-danger btn-sm";
+
+    deleteCell.appendChild(btnDelete);
+
+    employeeCount++;
+    countOutput.value = employeeCount;
+
+    btnDelete.addEventListener("click", function () {
+        if (confirm("Are you sure you want to delete this employee?")) {
+            row.remove();
+            employeeCount--;
+            countOutput.value = employeeCount;
+        }
+    });
+
+    form.reset();
+});
