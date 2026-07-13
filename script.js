@@ -41,8 +41,9 @@
 
 
 "use strict";
-//form.addEventListener('submit', (e) => {
- window.addEventListener("load", init);
+const form = document.getElementById("addForm");
+form.addEventListener('submit', (e) => {
+ //window.addEventListener("load", init);
 
 function init() {
 
@@ -77,7 +78,7 @@ function init() {
         let email = empEmail.value.trim();
         let dept = empDept.value;
 
-        // Basic Validation
+        // Basic Validation of the imputs
         if (
             id === "" ||
             name === "" ||
@@ -149,4 +150,4 @@ function init() {
         // SET FOCUS BACK TO THE ID TEXT BOX / Return Cursor to Employee ID
         empID.focus();
 
-    })};
+    })}});
